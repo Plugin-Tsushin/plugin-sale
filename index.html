@@ -26,11 +26,7 @@
             --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', 'Noto Sans JP', sans-serif;
@@ -47,11 +43,7 @@
             text-align: center;
         }
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
+        .header-content { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
 
         .header h1 {
             font-size: 1.75rem;
@@ -63,16 +55,9 @@
             margin-bottom: 0.5rem;
         }
 
-        .header-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
+        .header-subtitle { color: var(--text-secondary); font-size: 0.9rem; }
 
-        .main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
+        .main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
 
         .deals-grid {
             display: grid;
@@ -110,9 +95,7 @@
             transition: transform 0.4s ease;
         }
 
-        .deal-card:hover .deal-image {
-            transform: scale(1.05);
-        }
+        .deal-card:hover .deal-image { transform: scale(1.05); }
 
         .deal-image-placeholder {
             width: 100%;
@@ -138,17 +121,9 @@
             box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
         }
 
-        .discount-badge.high {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        }
-
-        .discount-badge.medium {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        }
-
-        .discount-badge.low {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
+        .discount-badge.high { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .discount-badge.medium { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .discount-badge.low { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
 
         .end-date-badge {
             position: absolute;
@@ -199,17 +174,8 @@
             flex-wrap: wrap;
         }
 
-        .sale-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--success);
-        }
-
-        .original-price {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            text-decoration: line-through;
-        }
+        .sale-price { font-size: 1.5rem; font-weight: 700; color: var(--success); }
+        .original-price { font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; }
 
         .deal-link {
             display: block;
@@ -248,23 +214,12 @@
             margin-top: 2rem;
         }
 
-        .footer a {
-            color: var(--accent-secondary);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
+        .footer a { color: var(--accent-secondary); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.4rem;
-            }
-
-            .deals-grid {
-                grid-template-columns: 1fr;
-            }
+            .header h1 { font-size: 1.4rem; }
+            .deals-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -286,7 +241,7 @@
     </footer>
 
     <script>
-        const salesData = [
+        var salesData = [
   {
     "name": "SSL Native Channel Strip 2",
     "salePrice": 3247,
@@ -469,94 +424,83 @@
   }
 ];
 
-        function parseDiscount(discountStr) {
-            if (!discountStr) return 0;
-            const match = discountStr.match(/(\d+)%/);
-            return match ? parseInt(match[1]) : 0;
+        function parseDiscount(str) {
+            if (!str) return 0;
+            var m = str.match(/(\d+)%/);
+            return m ? parseInt(m[1]) : 0;
         }
 
-        function parseEndDate(endDateStr) {
-            if (!endDateStr || endDateStr === 'nan') return null;
-            const match = endDateStr.match(/Ends?\s+(\d{1,2})\s+(\w+)/i);
-            if (!match) return null;
-            
-            const day = parseInt(match[1]);
-            const monthStr = match[2].toLowerCase();
-            const months = {
-                'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
-                'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
-            };
-            
-            const month = months[monthStr];
+        function parseEndDate(str) {
+            if (!str || str === 'nan') return null;
+            var m = str.match(/Ends?\s+(\d{1,2})\s+(\w+)/i);
+            if (!m) return null;
+            var day = parseInt(m[1]);
+            var months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+            var month = months[m[2].toLowerCase()];
             if (month === undefined) return null;
-            
-            const now = new Date();
-            let year = now.getFullYear();
-            if (month < now.getMonth() || (month === now.getMonth() && day < now.getDate())) {
-                year++;
-            }
+            var now = new Date();
+            var year = now.getFullYear();
+            if (month < now.getMonth() || (month === now.getMonth() && day < now.getDate())) year++;
             return new Date(year, month, day);
         }
 
-        function renderDeals() {
-            const dealsGrid = document.getElementById('dealsGrid');
+        function render() {
+            var grid = document.getElementById('dealsGrid');
+            var html = '';
             
-            dealsGrid.innerHTML = salesData.map(function(deal) {
-                const discountPercent = parseDiscount(deal.discount);
-                const endDate = parseEndDate(deal.endDate);
-                const now = new Date();
-                const daysUntilEnd = endDate ? Math.ceil((endDate - now) / (1000 * 60 * 60 * 24)) : null;
+            for (var i = 0; i < salesData.length; i++) {
+                var deal = salesData[i];
+                var discountPercent = parseDiscount(deal.discount);
+                var endDate = parseEndDate(deal.endDate);
+                var now = new Date();
+                var daysLeft = endDate ? Math.ceil((endDate - now) / 86400000) : null;
                 
-                let discountClass = 'low';
+                var discountClass = 'low';
                 if (discountPercent >= 70) discountClass = 'high';
                 else if (discountPercent >= 40) discountClass = 'medium';
                 
-                const isUrgent = daysUntilEnd !== null && daysUntilEnd <= 3;
+                var isUrgent = daysLeft !== null && daysLeft <= 3;
                 
-                let priceHTML = '';
+                var priceHTML = '';
                 if (deal.salePrice === null || deal.salePrice === 0) {
                     priceHTML = '<span class="free-badge">FREE</span>';
                 } else {
                     priceHTML = '<span class="sale-price">¥' + deal.salePrice.toLocaleString() + '</span>';
                     if (deal.originalPrice) {
-                        priceHTML += '<span class="original-price">' + deal.originalPrice + '</span>';
+                        priceHTML += ' <span class="original-price">' + deal.originalPrice + '</span>';
                     }
                 }
                 
-                let imageHTML = '';
+                var imgHTML = '';
                 if (deal.imageUrl && deal.imageUrl !== 'nan') {
-                    imageHTML = '<img src="' + deal.imageUrl + '" alt="' + deal.name + '" class="deal-image" loading="lazy" onerror="this.parentElement.innerHTML='<div class=deal-image-placeholder>No Image</div>'">';
+                    imgHTML = '<img src="' + deal.imageUrl + '" alt="' + deal.name + '" class="deal-image" loading="lazy">';
                 } else {
-                    imageHTML = '<div class="deal-image-placeholder">No Image</div>';
+                    imgHTML = '<div class="deal-image-placeholder">No Image</div>';
                 }
                 
-                let discountHTML = '';
+                var discountHTML = '';
                 if (discountPercent > 0) {
                     discountHTML = '<span class="discount-badge ' + discountClass + '">' + discountPercent + '% OFF</span>';
                 }
                 
-                let endDateHTML = '';
+                var endHTML = '';
                 if (deal.endDate && deal.endDate !== 'nan') {
-                    const urgentClass = isUrgent ? 'urgent' : '';
-                    endDateHTML = '<span class="end-date-badge ' + urgentClass + '">' + deal.endDate + '</span>';
+                    endHTML = '<span class="end-date-badge' + (isUrgent ? ' urgent' : '') + '">' + deal.endDate + '</span>';
                 }
                 
-                return '<article class="deal-card">' +
-                    '<div class="deal-image-wrapper">' +
-                        imageHTML +
-                        discountHTML +
-                        endDateHTML +
-                    '</div>' +
-                    '<div class="deal-content">' +
-                        '<h3 class="deal-title">' + deal.name + '</h3>' +
-                        '<div class="deal-pricing">' + priceHTML + '</div>' +
-                        '<a href="' + deal.productUrl + '" target="_blank" rel="noopener" class="deal-link">詳細を見る →</a>' +
-                    '</div>' +
-                '</article>';
-            }).join('');
+                html += '<article class="deal-card">';
+                html += '<div class="deal-image-wrapper">' + imgHTML + discountHTML + endHTML + '</div>';
+                html += '<div class="deal-content">';
+                html += '<h3 class="deal-title">' + deal.name + '</h3>';
+                html += '<div class="deal-pricing">' + priceHTML + '</div>';
+                html += '<a href="' + deal.productUrl + '" target="_blank" rel="noopener" class="deal-link">詳細を見る →</a>';
+                html += '</div></article>';
+            }
+            
+            grid.innerHTML = html;
         }
 
-        renderDeals();
+        render();
     </script>
 </body>
 </html>
