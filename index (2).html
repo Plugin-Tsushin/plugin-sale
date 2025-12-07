@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おすすめセールプラグイン 毎日更新</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --bg-card-hover: #22222e;
+            --accent-primary: #6366f1;
+            --accent-secondary: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .deal-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--card-shadow), 0 0 30px var(--accent-glow);
+        }
+
+        .deal-image-wrapper {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+
+        .deal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .deal-card:hover .deal-image {
+            transform: scale(1.05);
+        }
+
+        .deal-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--danger);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+
+        .discount-badge.high {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .discount-badge.medium {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .discount-badge.low {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .end-date-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .end-date-badge.urgent {
+            background: rgba(239, 68, 68, 0.9);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .deal-content {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .deal-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .deal-pricing {
+            margin-top: auto;
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .sale-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .original-price {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .deal-link {
+            display: block;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .deal-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .free-badge {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .footer a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .deals-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>🎹 おすすめセールプラグイン 毎日更新</h1>
+            <p class="header-subtitle">Plugin Boutiqueのお得なセール情報をまとめてチェック</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="deals-grid" id="dealsGrid"></div>
+    </main>
+
+    <footer class="footer">
+        <p>データ提供元: <a href="https://www.pluginboutique.com/" target="_blank" rel="noopener">Plugin Boutique</a></p>
+        <p style="margin-top: 0.5rem;">※価格は変動する場合があります。最新情報は公式サイトでご確認ください。</p>
+    </footer>
+
+    <script>
+        const salesData = [
+  {
+    "name": "SSL Native Channel Strip 2",
+    "salePrice": 3247,
+    "originalPrice": "¥25,464",
+    "discount": "(87% off)",
+    "endDate": "Ends 10 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/2-Effects/21-Channel-Strip/8653-SSL-Native-Channel-Strip-2?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/prmzx7sx8qr4q1emofucg15t1nkk"
+  },
+  {
+    "name": "Evolve Elastic Lite",
+    "salePrice": 3247,
+    "originalPrice": "¥4,956",
+    "discount": "(34% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/1-Instruments/64-Virtual-Instruments/16352-Evolve-Elastic-Lite?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/p1fcpu6a5hy9nh56gmlfkke7opva"
+  },
+  {
+    "name": "Scaler 3",
+    "salePrice": 11792,
+    "originalPrice": "¥16,919",
+    "discount": "(30% off)",
+    "endDate": "Ends 08 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/3-Studio-Tools/93-Music-Theory-Tools/14563-Scaler-3?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/nzlzl0j8myro15qmngvz93igrzu0"
+  },
+  {
+    "name": "Scaler 3 Upgrade",
+    "salePrice": 4956,
+    "originalPrice": "¥6,665",
+    "discount": "(25% off)",
+    "endDate": "Ends 31 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/3-Studio-Tools/93-Music-Theory-Tools/14479-Scaler-3-Upgrade?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/kp21n501bygs5bidsa0jyt6pbaq9"
+  },
+  {
+    "name": "Plugin Boutique $69 Holiday 2025 Bundle",
+    "salePrice": 11792,
+    "originalPrice": "¥311,197",
+    "discount": "(96% off)",
+    "endDate": "Ends 04 Jan",
+    "productUrl": "https://www.pluginboutique.com/product/81-Bundles/97-Various-Category/16137-Plugin-Boutique-69-Holiday-2025-Bundle?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/p0nntwp3r0fkuouzl4igu5mdkbwj"
+  },
+  {
+    "name": "Thenatan Full Bundle",
+    "salePrice": 6665,
+    "originalPrice": "¥308,980",
+    "discount": "(97% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/81-Bundles/89-Complete-Collection/16253-Thenatan-Full-Bundle?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/enluvkxl2aw3sgca1n1xguwpj7du"
+  },
+  {
+    "name": "Melodyne 5 Assistant Limited Time Offer",
+    "salePrice": 12646,
+    "originalPrice": "¥42,382",
+    "discount": "(70% off)",
+    "endDate": "Ends 30 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/3-Studio-Tools/48-Audio-Editor/7687-Melodyne-5-Assistant-Limited-Time-Offer?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/wvc5hdqib0lgnzhdz42n2r4irbh2"
+  },
+  {
+    "name": "Melodyne 5 Essential",
+    "salePrice": 4272,
+    "originalPrice": "¥16,919",
+    "discount": "(74% off)",
+    "endDate": "Ends 30 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/3-Studio-Tools/48-Audio-Editor/6446-Melodyne-5-Essential?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/wn2sjcd6bl46rvmes38vpppt1l6o"
+  },
+  {
+    "name": "Decapitator",
+    "salePrice": 11792,
+    "originalPrice": "¥34,008",
+    "discount": "(65% off)",
+    "endDate": "Ends 01 Jan",
+    "productUrl": "https://www.pluginboutique.com/product/2-Effects/44-Saturation/1801-Decapitator?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/fft6y3lvmuhmh746su53loaggd4h"
+  },
+  {
+    "name": "MODO BASS 2",
+    "salePrice": 8543,
+    "originalPrice": "¥34,178",
+    "discount": "(75% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/1-Instruments/64-Virtual-Instruments/12454-MODO-BASS-2?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/l2b6f42yd4uk493334cpovwqwtp1"
+  },
+  {
+    "name": "ShaperBox 3 Bundle",
+    "salePrice": 15210,
+    "originalPrice": "¥16,919",
+    "discount": "(10% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/81-Bundles/39-Effects-Bundles/9819-ShaperBox-3-Bundle?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/u9rjukviu4xngzn68l2ha4h17ap7"
+  },
+  {
+    "name": "Little AlterBoy",
+    "salePrice": 8374,
+    "originalPrice": "¥16,919",
+    "discount": "(50% off)",
+    "endDate": "Ends 01 Jan",
+    "productUrl": "https://www.pluginboutique.com/product/2-Effects/54-Vocal-Processing/1807-Little-AlterBoy?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/0oyhn9jqdaxoavgajgt7h537me65"
+  },
+  {
+    "name": "Xpand!2",
+    "salePrice": 4956,
+    "originalPrice": "¥16,919",
+    "discount": "(70% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/1-Instruments/64-Virtual-Instruments/1560-Xpand-2?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/6c5hjivcytqp0gyymxctblw9r97u"
+  },
+  {
+    "name": "UAD 'Build Your Own Bundle' Mix Tape Pro",
+    "salePrice": 16919,
+    "originalPrice": "¥51,098",
+    "discount": "(66% off)",
+    "endDate": "Ends 31 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/81-Bundles/39-Effects-Bundles/16130-UAD-Build-Your-Own-Bundle-Mix-Tape-Pro?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/fgjvk0p1fwugq43n7uvjfxt29fth"
+  },
+  {
+    "name": "RC-20 Retro Color",
+    "salePrice": 8459,
+    "originalPrice": "¥16,919",
+    "discount": "(50% off)",
+    "endDate": "Ends 08 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/2-Effects/44-Saturation/3016-RC-20-Retro-Color?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/vvc8qw0xl9vx00ls8wseki4vlnav"
+  },
+  {
+    "name": "Excite Audio Bundle Crossgrade From Any Excite Audio Product",
+    "salePrice": 35717,
+    "originalPrice": "¥109,032",
+    "discount": "(67% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/81-Bundles/89-Complete-Collection/14789-Excite-Audio-Bundle-Crossgrade-From-Any-Excite-Audio-Product?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/019eaymrfostad3ry755bwgegp2u"
+  },
+  {
+    "name": "M1",
+    "salePrice": 8543,
+    "originalPrice": "¥17,088",
+    "discount": "(50% off)",
+    "endDate": "Ends 08 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/1-Instruments/4-Synth/11198-M1?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/6eb05zkx7km4cgglr25wi62x0fdn"
+  },
+  {
+    "name": "AmpliTube 5 MAX v2 + TONEX MAX FREE",
+    "salePrice": 17088,
+    "originalPrice": "¥102,534",
+    "discount": "(83% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/2-Effects/18-Amp-Simulator/12444-AmpliTube-5-MAX-v2-TONEX-MAX-FREE?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/1cuxxls3vwg7g9am4tuqsij12n6o"
+  },
+  {
+    "name": "Soundtoys 5.5",
+    "salePrice": 51098,
+    "originalPrice": "¥102,367",
+    "discount": "(50% off)",
+    "endDate": "Ends 01 Jan",
+    "productUrl": "https://www.pluginboutique.com/product/81-Bundles/89-Complete-Collection/15254-Soundtoys-5-5?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/3ejiooyn90xqu332ryz45f1asud5"
+  },
+  {
+    "name": "Snapback",
+    "salePrice": 4956,
+    "originalPrice": "¥8,374",
+    "discount": "(40% off)",
+    "endDate": "Ends 07 Dec",
+    "productUrl": "https://www.pluginboutique.com/product/2-Effects/13-Drum-FX/13655-Snapback?a_aid=688228cd487ff",
+    "imageUrl": "https://banners.pluginboutique.com/rvexvhqv3varo0ne9y69o05ubdhu"
+  }
+];
+
+        function parseDiscount(discountStr) {
+            if (!discountStr) return 0;
+            const match = discountStr.match(/(\d+)%/);
+            return match ? parseInt(match[1]) : 0;
+        }
+
+        function parseEndDate(endDateStr) {
+            if (!endDateStr || endDateStr === 'nan') return null;
+            const match = endDateStr.match(/Ends?\s+(\d{1,2})\s+(\w+)/i);
+            if (!match) return null;
+            
+            const day = parseInt(match[1]);
+            const monthStr = match[2].toLowerCase();
+            const months = {
+                'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5,
+                'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
+            };
+            
+            const month = months[monthStr];
+            if (month === undefined) return null;
+            
+            const now = new Date();
+            let year = now.getFullYear();
+            if (month < now.getMonth() || (month === now.getMonth() && day < now.getDate())) {
+                year++;
+            }
+            return new Date(year, month, day);
+        }
+
+        function renderDeals() {
+            const dealsGrid = document.getElementById('dealsGrid');
+            
+            dealsGrid.innerHTML = salesData.map(function(deal) {
+                const discountPercent = parseDiscount(deal.discount);
+                const endDate = parseEndDate(deal.endDate);
+                const now = new Date();
+                const daysUntilEnd = endDate ? Math.ceil((endDate - now) / (1000 * 60 * 60 * 24)) : null;
+                
+                let discountClass = 'low';
+                if (discountPercent >= 70) discountClass = 'high';
+                else if (discountPercent >= 40) discountClass = 'medium';
+                
+                const isUrgent = daysUntilEnd !== null && daysUntilEnd <= 3;
+                
+                let priceHTML = '';
+                if (deal.salePrice === null || deal.salePrice === 0) {
+                    priceHTML = '<span class="free-badge">FREE</span>';
+                } else {
+                    priceHTML = '<span class="sale-price">¥' + deal.salePrice.toLocaleString() + '</span>';
+                    if (deal.originalPrice) {
+                        priceHTML += '<span class="original-price">' + deal.originalPrice + '</span>';
+                    }
+                }
+                
+                let imageHTML = '';
+                if (deal.imageUrl && deal.imageUrl !== 'nan') {
+                    imageHTML = '<img src="' + deal.imageUrl + '" alt="' + deal.name + '" class="deal-image" loading="lazy" onerror="this.parentElement.innerHTML='<div class=deal-image-placeholder>No Image</div>'">';
+                } else {
+                    imageHTML = '<div class="deal-image-placeholder">No Image</div>';
+                }
+                
+                let discountHTML = '';
+                if (discountPercent > 0) {
+                    discountHTML = '<span class="discount-badge ' + discountClass + '">' + discountPercent + '% OFF</span>';
+                }
+                
+                let endDateHTML = '';
+                if (deal.endDate && deal.endDate !== 'nan') {
+                    const urgentClass = isUrgent ? 'urgent' : '';
+                    endDateHTML = '<span class="end-date-badge ' + urgentClass + '">' + deal.endDate + '</span>';
+                }
+                
+                return '<article class="deal-card">' +
+                    '<div class="deal-image-wrapper">' +
+                        imageHTML +
+                        discountHTML +
+                        endDateHTML +
+                    '</div>' +
+                    '<div class="deal-content">' +
+                        '<h3 class="deal-title">' + deal.name + '</h3>' +
+                        '<div class="deal-pricing">' + priceHTML + '</div>' +
+                        '<a href="' + deal.productUrl + '" target="_blank" rel="noopener" class="deal-link">詳細を見る →</a>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+        }
+
+        renderDeals();
+    </script>
+</body>
+</html>
