@@ -76,13 +76,13 @@
 
         .deals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
         }
 
         .deal-card {
             background: var(--bg-card);
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
@@ -107,11 +107,18 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            object-position: center;
+            /* 画像の最適化 */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            /* スムーズに見せる */
+            filter: contrast(1.02) saturate(1.05);
+            transition: transform 0.4s ease, filter 0.3s ease;
         }
 
         .deal-card:hover .deal-image {
-            transform: scale(1.05);
+            transform: scale(1.03);
+            filter: contrast(1.05) saturate(1.1);
         }
 
         .deal-image-placeholder {
@@ -127,13 +134,13 @@
 
         .discount-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 10px;
+            right: 10px;
             background: var(--danger);
             color: white;
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.75rem;
             font-weight: 600;
             box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
         }
@@ -152,13 +159,13 @@
 
         .end-date-badge {
             position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(0, 0, 0, 0.7);
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.75);
             color: var(--text-primary);
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
             backdrop-filter: blur(4px);
         }
 
@@ -173,17 +180,17 @@
         }
 
         .deal-content {
-            padding: 1.25rem;
+            padding: 1rem;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .deal-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.6rem;
             line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -195,33 +202,33 @@
             margin-top: auto;
             display: flex;
             align-items: baseline;
-            gap: 0.75rem;
+            gap: 0.6rem;
             flex-wrap: wrap;
         }
 
         .sale-price {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--success);
         }
 
         .original-price {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             text-decoration: line-through;
         }
 
         .deal-link {
             display: block;
-            margin-top: 1rem;
+            margin-top: 0.9rem;
             background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
             color: white;
             text-align: center;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
+            padding: 0.65rem 0.9rem;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.2s ease;
         }
 
@@ -233,9 +240,9 @@
         .free-badge {
             background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
-            padding: 0.25rem 0.75rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
@@ -263,6 +270,30 @@
             }
 
             .deals-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .deal-content {
+                padding: 0.75rem;
+            }
+
+            .deal-title {
+                font-size: 0.8rem;
+            }
+
+            .sale-price {
+                font-size: 1.1rem;
+            }
+
+            .deal-link {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .deals-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -286,7 +317,6 @@
     </footer>
 
     <script>
-        // セールデータ（JSONから読み込み、またはここに直接埋め込み）
         const salesData = [
   {
     "name": "FabFilter Pro-Q 4",
@@ -470,14 +500,12 @@
   }
 ];
 
-        // Parse discount percentage
         function parseDiscount(discountStr) {
             if (!discountStr) return 0;
             const match = discountStr.match(/(\d+)%/);
             return match ? parseInt(match[1]) : 0;
         }
 
-        // Parse end date
         function parseEndDate(endDateStr) {
             if (!endDateStr || endDateStr === 'nan') return null;
             const match = endDateStr.match(/Ends?\s+(\d{1,2})\s+(\w+)/i);
@@ -501,7 +529,6 @@
             return new Date(year, month, day);
         }
 
-        // Render deals
         function renderDeals() {
             const dealsGrid = document.getElementById('dealsGrid');
             
@@ -557,7 +584,6 @@
             }).join('');
         }
 
-        // Start
         renderDeals();
     </script>
 </body>
