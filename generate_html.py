@@ -71,7 +71,7 @@ html = '''<!DOCTYPE html>
         }
         
         .header h1 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             margin-bottom: 6px;
         }
@@ -117,10 +117,27 @@ html = '''<!DOCTYPE html>
             color: #fff;
         }
         
+        /* PC: 4列 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
+        }
+        
+        /* タブレット: 2列 */
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* スマホ: 1列 */
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 { font-size: 18px; }
+            .filter-btn { padding: 6px 12px; font-size: 12px; }
         }
         
         .card {
@@ -128,7 +145,8 @@ html = '''<!DOCTYPE html>
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
         
         .card:hover {
@@ -136,31 +154,37 @@ html = '''<!DOCTYPE html>
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
         
-        .card-urgent {
-            border: 1px solid #ef4444;
-        }
-        
-        .urgent-label {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: #ef4444;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
+        .card-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            background: #1a1a24;
         }
         
         .card-image {
             width: 100%;
-            height: 120px;
+            height: 100%;
             object-fit: cover;
-            background: #1a1a24;
+        }
+        
+        .urgent-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(239, 68, 68, 0.95);
+            color: #fff;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
         }
         
         .card-body {
             padding: 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .card-title {
@@ -179,8 +203,9 @@ html = '''<!DOCTYPE html>
         .price-row {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
         }
         
         .price-sale {
@@ -190,7 +215,7 @@ html = '''<!DOCTYPE html>
         }
         
         .price-original {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
             text-decoration: line-through;
         }
@@ -208,9 +233,7 @@ html = '''<!DOCTYPE html>
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 10px 0;
-            padding: 8px 0;
-            border-top: 1px solid #222;
+            margin-bottom: 12px;
             font-size: 12px;
         }
         
@@ -224,7 +247,7 @@ html = '''<!DOCTYPE html>
         
         .end-date-urgent {
             color: #ef4444;
-            font-weight: 500;
+            font-weight: 600;
         }
         
         .cta-btn {
@@ -239,18 +262,11 @@ html = '''<!DOCTYPE html>
             font-size: 13px;
             font-weight: 500;
             transition: background 0.2s;
+            margin-top: auto;
         }
         
         .cta-btn:hover {
             background: #4a4ae0;
-        }
-        
-        .cta-btn-urgent {
-            background: linear-gradient(90deg, #ef4444, #f97316);
-        }
-        
-        .cta-btn-urgent:hover {
-            background: linear-gradient(90deg, #dc2626, #ea580c);
         }
         
         .footer {
@@ -261,11 +277,6 @@ html = '''<!DOCTYPE html>
         }
         
         .footer a { color: #5b5bf0; text-decoration: none; }
-        
-        @media (max-width: 640px) {
-            .grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 20px; }
-        }
     </style>
 </head>
 <body>
@@ -332,13 +343,15 @@ html = '''<!DOCTYPE html>
                 const isUrgent = days <= 3;
                 
                 const card = document.createElement('div');
-                card.className = 'card' + (isUrgent ? ' card-urgent' : '');
+                card.className = 'card';
                 
                 const endText = isUrgent ? `残り${days}日` : deal.endDate.replace('Ends ', '');
                 
                 card.innerHTML = `
-                    ${isUrgent ? '<div class="urgent-label">まもなく終了</div>' : ''}
-                    <img src="${deal.imageUrl}" alt="" class="card-image" onerror="this.style.display='none'">
+                    <div class="card-image-wrapper">
+                        ${isUrgent ? '<div class="urgent-badge">⚠ まもなく終了</div>' : ''}
+                        <img src="${deal.imageUrl}" alt="" class="card-image" onerror="this.style.display='none'">
+                    </div>
                     <div class="card-body">
                         <div class="card-title">${deal.name}</div>
                         <div class="price-row">
@@ -350,9 +363,7 @@ html = '''<!DOCTYPE html>
                             <span class="savings">¥${deal.savings.toLocaleString()} お得</span>
                             <span class="${isUrgent ? 'end-date-urgent' : 'end-date'}">${endText}</span>
                         </div>
-                        <a href="${deal.productUrl}" target="_blank" class="cta-btn${isUrgent ? ' cta-btn-urgent' : ''}">
-                            ${isUrgent ? '🔥 今すぐチェック' : '詳細を見る'}
-                        </a>
+                        <a href="${deal.productUrl}" target="_blank" class="cta-btn">詳細を見る</a>
                     </div>
                 `;
                 container.appendChild(card);
