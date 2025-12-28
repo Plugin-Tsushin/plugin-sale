@@ -162,40 +162,6 @@ html = '''<!DOCTYPE html>
             padding: 0 16px 40px;
         }
         
-        /* 信頼性バー */
-        .trust-section {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 1px solid #2a2a4a;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-        
-        .trust-title {
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #888;
-        }
-        
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-        }
-        
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #ccc;
-        }
-        
-        .trust-icon {
-            font-size: 18px;
-        }
-        
         /* おすすめ枠 */
         .picks-section {
             margin-bottom: 32px;
@@ -395,7 +361,6 @@ html = '''<!DOCTYPE html>
             align-items: center;
             transition: all 0.2s;
             border: 1px solid transparent;
-            cursor: pointer;
         }
         
         .deal-card:hover {
@@ -608,9 +573,6 @@ html = '''<!DOCTYPE html>
             .header { padding: 32px 16px 20px; }
             .header h1 { font-size: 20px; }
             
-            .trust-grid { grid-template-columns: 1fr; gap: 8px; }
-            .trust-item { font-size: 12px; }
-            
             .picks-grid { grid-template-columns: 1fr; }
             
             .deal-card {
@@ -632,54 +594,6 @@ html = '''<!DOCTYPE html>
                 font-size: 12px;
             }
         }
-        
-        /* モバイル固定フッター */
-        .mobile-footer {
-            display: none;
-        }
-        
-        @media (max-width: 640px) {
-            .mobile-footer {
-                display: block;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: rgba(10, 10, 15, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 12px 16px;
-                border-top: 1px solid #2a2a3a;
-                z-index: 1000;
-            }
-            
-            .mobile-footer-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 12px;
-            }
-            
-            .mobile-footer-text {
-                font-size: 12px;
-                color: #888;
-            }
-            
-            .mobile-footer-text strong {
-                color: #22c55e;
-                font-size: 14px;
-            }
-            
-            .mobile-footer-btn {
-                padding: 12px 20px;
-                background: #5b5bf0;
-                color: #fff;
-                text-decoration: none;
-                border-radius: 8px;
-                font-size: 12px;
-                font-weight: 700;
-                white-space: nowrap;
-            }
-        }
     </style>
 </head>
 <body>
@@ -689,29 +603,6 @@ html = '''<!DOCTYPE html>
     </header>
     
     <div class="container">
-        <!-- 信頼性セクション -->
-        <div class="trust-section">
-            <div class="trust-title">🔒 安心してお買い物いただけます</div>
-            <div class="trust-grid">
-                <div class="trust-item">
-                    <span class="trust-icon">✅</span>
-                    <span>公式ストアへ直接リンク</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">💳</span>
-                    <span>日本のクレジットカード対応</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">📧</span>
-                    <span>購入後すぐにライセンス届く</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">↩️</span>
-                    <span>30日間返金保証あり</span>
-                </div>
-            </div>
-        </div>
-        
         <!-- おすすめピック -->
         <div class="picks-section" id="picks-section"></div>
         
@@ -754,17 +645,6 @@ html = '''<!DOCTYPE html>
     <footer class="footer">
         <p>データ: <a href="https://www.pluginboutique.com/" target="_blank">Plugin Boutique</a> | 価格は変動する場合があります</p>
     </footer>
-    
-    <!-- モバイル固定フッター -->
-    <div class="mobile-footer" id="mobile-footer" style="display:none;">
-        <div class="mobile-footer-content">
-            <div class="mobile-footer-text">
-                <span id="footer-deal-name"></span><br>
-                <strong id="footer-deal-price"></strong>
-            </div>
-            <a href="#" id="footer-deal-link" class="mobile-footer-btn" target="_blank">購入する</a>
-        </div>
-    </div>
     
     <script>
         const salesData = ''' + sales_json + ''';
